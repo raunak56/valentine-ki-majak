@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            overflow: hidden;
+        }
+        .gradient-background {
+            background: linear-gradient(180deg, #ffd0e5 0%, #ffe8f2 36%, #ffffff 100%);
+            position: relative;
+        }
+        @keyframes bounce2 {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        .bounce2 { animation: bounce2 2s ease infinite; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        
+        @keyframes floatHearts {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            animation: floatHearts 5s linear infinite;
+        }
+        @keyframes sparkle {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+.sparkle {
+    position: absolute;
+    font-size: 20px;
+    animation: sparkle 1s linear infinite;
+}
+
+    </style>
+</head>
+<body class="gradient-background flex items-center justify-center h-screen">
+    <div class="flex flex-col items-center p-4">
+        <img id="imageDisplay" src="image1.gif" alt="Cute kitten with flowers" class="rounded-md h-[300px] object-cover fade-in" />
+        <h2 id="valentineQuestion" class="text-4xl font-bold italic text-[#bd1e59] my-4">Will you be my Valentine?</h2>
+        <div class="flex gap-4 pt-5 items-center" id="responseButtons">
+            <button id="yesButton" class="bounce2 inline-flex items-center justify-center rounded-md text-[20px] font-medium hover:bg-green-400 min-h-12 min-w-[75px] px-4 py-2 bg-green-500 text-white transition">😍Yes</button>
+            <button id="noButton" class="inline-flex items-center justify-center rounded-md text-[20px] font-medium transition hover:bg-red-700 h-12 min-w-[75px] px-4 py-2 bg-red-500 text-white">💔No</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const imageDisplay = document.getElementById('imageDisplay');
+        const valentineQuestion = document.getElementById('valentineQuestion');
+        const responseButtons = document.getElementById('responseButtons');
+        let noClickCount = 0;
+        let buttonSize = 80;
+        const imagePaths = ["image1.gif", "image2.gif", "image3.gif", "image4.gif", "image5.gif", "image6.gif", "image7.gif"];
+        
+        noButton.addEventListener('click', function() {
+            if (noClickCount < 5) {
+                noClickCount++;
+                imageDisplay.src = imagePaths[noClickCount];
+                imageDisplay.classList.add('fade-in');
+                setTimeout(() => imageDisplay.classList.remove('fade-in'), 500);
+                buttonSize += 35;
+                yesButton.style.transform = `scale(${1 + noClickCount * 0.2})`;
+                noButton.textContent = ["💔 No", "😢 Are you sure?", "🥺 Pookie please", "😭 Don't do this to me!", "💀 You're breaking my heart", "😿 I'm gonna cry..."][noClickCount];
+            }
+        });
+       
+
+
+        noButton.addEventListener('mouseover', function() {
+            if (noClickCount > 3) {
+                noButton.style.position = 'absolute';
+                noButton.style.top = `${Math.random() * 80 + 10}%`;
+                noButton.style.left = `${Math.random() * 80 + 10}%`;
+            }
+        });
+
+
+        yesButton.addEventListener('click', () => {
+            imageDisplay.src = "image7.gif";
+            valentineQuestion.textContent = "Yayyy!! 🎉😍💖";
+            responseButtons.style.display = 'none';
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => confetti(), i * 500);
+            }
+        });
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = "❤️";
+            heart.innerHTML = "❤️";
+            heart.innerHTML = "❤️";
+            heart.innerHTML = "❤️";
+            heart.className = "heart";
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 500);
+        function createSparkle() {
+    const sparkle = document.createElement("div");
+    sparkle.innerHTML = "✨";
+    sparkle.className = "sparkle";
+    sparkle.style.left = `${Math.random() * 100}vw`;
+    sparkle.style.right = `${Math.random() * 100}vw`;
+    sparkle.style.top = `${Math.random() * 100}vh`;
+    sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 2000);
+}
+setInterval(createSparkle, 800);
+
+    </script>
+</body>
+</html>
